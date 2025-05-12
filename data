@@ -1,0 +1,68 @@
+import numpy as np
+import pandas as pd
+from scipy import stats
+
+# 设置随机种子以便结果可复现
+np.random.seed(42)
+
+# 生成第一组数据 (信度≈0.75)
+def generate_reliable_data(n_subjects=85, n_items=10, target_alpha=0.75, tolerance=0.05):
+    while True:
+        # 生成相关数据以确保较高信度
+        latent_trait = np.random.normal(size=n_subjects)
+        error = np.random.normal(scale=0.7, size=(n_subjects, n_items))  # 增加误差降低信度
+        item_loadings = np.random.uniform(0.4, 0.65, n_items)  # 调整载荷范围
+        
+        # 生成符合正态分布的原始分数
+        raw_scores = np.outer(latent_trait, item_loadings) + error
+        
+        # 转换为1-5分的李克特量表
+        data = np.clip(np.round(raw_scores * 2 + 3), 1, 5).astype(int)
+        
+        # 计算克伦巴赫系数
+        df = pd.DataFrame(data)
+        item_variances = df.var()
+        total_variance = df.sum(axis=1).var()
+        alpha = (n_items / (n_items - 1)) * (1 - item_variances.sum() / total_variance)
+        
+        # 控制信度在目标值附近
+        if target_alpha - tolerance <= alpha <= target_alpha + tolerance:
+            return df, alpha
+
+# 生成第一组数据
+df1, alpha1 = generate_reliable_data()
+print(f"第一组数据信度 (Cronbach's α): {alpha1:.4f}")
+
+# 生成显著优于第一组的第二组数据
+while True:
+    # 在第一组基础上增加系统性提升
+    improvement_factor = np.random.uniform(0.4, 0.8)  # 平均提升0.4-0.8分
+    data2 = df1.values + np.random.normal(loc=improvement_factor, scale=0.25, size=df1.shape)
+    data2 = np.clip(np.round(data2), 1, 5).astype(int)
+    df2 = pd.DataFrame(data2)
+    
+    # 确保第二组保持合理信度
+    item_variances = df2.var()
+    total_variance = df2.sum(axis=1).var()
+    alpha2 = (10 / 9) * (1 - item_variances.sum() / total_variance)
+    
+    # 进行单侧t检验 (检验第二组均值是否显著大于第一组)
+    t_stat, p_value_two_tailed = stats.ttest_ind(
+        df2.values.flatten(), 
+        df1.values.flatten(), 
+        equal_var=False
+    )
+    p_value_one_tailed = p_value_two_tailed / 2  # 转换为单侧检验
+    
+    # 验证条件: 信度在0.7-0.8之间 且 平均分显著更高
+    if 0.7 <= alpha2 <= 0.8 and p_value_one_tailed < 0.05 and t_stat > 0:
+        break
+
+print(f"第二组数据信度 (Cronbach's α): {alpha2:.4f}")
+print(f"两组总分均值对比: {df1.values.mean():.2f} vs {df2.values.mean():.2f}")
+print(f"单侧t检验结果: t={t_stat:.4f}, p={p_value_one_tailed:.6f}")
+
+# 保存数据到CSV文件
+df1.to_csv('group1_data.csv', index=False)
+df2.to_csv('group2_data.csv', index=False)
+print("\n数据已保存为CSV文件 (group1_data.csv 和 group2_data.csv)")    
