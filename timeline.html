@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fact-Checking Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36BFFA',
+                        neutral: '#F5F7FA',
+                        dark: '#1D2129',
+                        accent: '#FF9F43',
+                        success: '#28C76F',
+                        warning: '#FF9F43',
+                        danger: '#EA5455',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'card': '0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03)',
+                        'card-hover': '0 20px 25px -5px rgba(22, 93, 255, 0.1), 0 10px 10px -5px rgba(22, 93, 255, 0.04)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .timeline-line {
+                @apply absolute top-0 bottom-0 left-0 w-0.5 bg-gradient-to-b from-primary via-secondary to-accent;
+            }
+            .timeline-dot {
+                @apply absolute left-0 w-6 h-6 rounded-full bg-white border-2 border-primary transform -translate-x-1/2 z-10 transition-all duration-300 shadow-md;
+            }
+            .timeline-item.active .timeline-dot {
+                @apply bg-primary scale-110;
+            }
+            .timeline-content {
+                @apply ml-8 opacity-0 max-h-0 overflow-hidden transition-all duration-500 ease-in-out;
+            }
+            .timeline-item.active .timeline-content {
+                @apply opacity-100 max-h-96 mb-8;
+            }
+            .timeline-header {
+                @apply cursor-pointer flex items-center mb-2 transition-all duration-300;
+            }
+            .timeline-header:hover h3 {
+                @apply text-primary;
+            }
+            .timeline-header:hover .timeline-dot {
+                @apply scale-110 shadow-lg;
+            }
+            .timeline-card {
+                @apply bg-white rounded-xl p-6 shadow-card transition-all duration-300 border-l-4 border-primary;
+            }
+            .timeline-card:hover {
+                @apply shadow-card-hover transform -translate-y-1;
+            }
+            .animate-float {
+                animation: float 3s ease-in-out infinite;
+            }
+            @keyframes float {
+                0% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+                100% { transform: translateY(0px); }
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-50 font-inter text-dark min-h-screen">
+    <div class="container mx-auto px-4 py-16 max-w-6xl">
+        <!-- Animated Header with Floating Elements -->
+        <header class="text-center mb-16 relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-secondary/10 rounded-full blur-3xl"></div>
+            
+            <div class="relative z-10">
+                <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6 animate-float">
+                    <i class="fa-solid fa-magnifying-glass-chart text-primary text-2xl"></i>
+                </div>
+                <h1 class="text-[clamp(2.5rem,5vw,3.5rem)] font-bold text-dark mb-4 tracking-tight">
+                    Fact-Checking Process
+                </h1>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                    A step-by-step guide to verifying information accuracy in the digital age
+                </p>
+            </div>
+        </header>
+        
+        <div class="relative mx-auto max-w-3xl">
+            <!-- Decorative Elements -->
+            <div class="absolute top-1/4 -right-16 w-10 h-10 bg-secondary/20 rounded-full blur-md"></div>
+            <div class="absolute top-3/4 -left-16 w-12 h-12 bg-accent/20 rounded-full blur-md"></div>
+            
+            <!-- Timeline Line -->
+            <div class="timeline-line"></div>
+            
+            <!-- Timeline Items -->
+            <div class="timeline-item active" data-step="1">
+                <div class="timeline-header">
+                    <div class="timeline-dot"></div>
+                    <h3 class="ml-8 text-xl font-semibold flex items-center">
+                        <i class="fa-solid fa-user-check mr-3 text-primary"></i>
+                        Verify Sources
+                    </h3>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-card">
+                        <div class="flex items-start">
+                            <div class="bg-primary/10 p-3 rounded-lg mr-4 hidden sm:block">
+                                <i class="fa-solid fa-info-circle text-primary text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-lg font-medium text-primary mb-3">Why it matters:</h4>
+                                <p class="text-gray-700 mb-4">The credibility of your information depends heavily on the reliability of its source. Always start by evaluating who created the content and their expertise in the subject area.</p>
+                                <h4 class="text-lg font-medium text-primary mb-3">How to do it:</h4>
+                                <ul class="list-disc pl-5 text-gray-700 space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Check the author's credentials and affiliations</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Look for signs of bias or agenda</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Verify if the source is a recognized authority</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Cross-reference with other reliable sources</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item" data-step="2">
+                <div class="timeline-header">
+                    <div class="timeline-dot"></div>
+                    <h3 class="ml-8 text-xl font-semibold flex items-center">
+                        <i class="fa-solid fa-retweet mr-3 text-primary"></i>
+                        Cross-Check
+                    </h3>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-card border-l-4 border-secondary">
+                        <div class="flex items-start">
+                            <div class="bg-secondary/10 p-3 rounded-lg mr-4 hidden sm:block">
+                                <i class="fa-solid fa-info-circle text-secondary text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-lg font-medium text-secondary mb-3">Why it matters:</h4>
+                                <p class="text-gray-700 mb-4">Single-source information can be misleading or incorrect. Cross-checking helps confirm facts from multiple independent perspectives.</p>
+                                <h4 class="text-lg font-medium text-secondary mb-3">How to do it:</h4>
+                                <ul class="list-disc pl-5 text-gray-700 space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Find at least two other credible sources that confirm the information</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Look for discrepancies in details across sources</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Check if the information aligns with established knowledge</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Beware of echo chambers and seek diverse viewpoints</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item" data-step="3">
+                <div class="timeline-header">
+                    <div class="timeline-dot"></div>
+                    <h3 class="ml-8 text-xl font-semibold flex items-center">
+                        <i class="fa-solid fa-magnifying-glass mr-3 text-primary"></i>
+                        Analyze Content
+                    </h3>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-card border-l-4 border-accent">
+                        <div class="flex items-start">
+                            <div class="bg-accent/10 p-3 rounded-lg mr-4 hidden sm:block">
+                                <i class="fa-solid fa-info-circle text-accent text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-lg font-medium text-accent mb-3">Why it matters:</h4>
+                                <p class="text-gray-700 mb-4">Misinformation can be subtle, often hidden in misleading context, selective quoting, or emotional language.</p>
+                                <h4 class="text-lg font-medium text-accent mb-3">How to do it:</h4>
+                                <ul class="list-disc pl-5 text-gray-700 space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Look for logical fallacies or emotional appeals</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Check if claims are supported by evidence</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Verify statistics and data sources</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Consider the context in which statements were made</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item" data-step="4">
+                <div class="timeline-header">
+                    <div class="timeline-dot"></div>
+                    <h3 class="ml-8 text-xl font-semibold flex items-center">
+                        <i class="fa-solid fa-tools mr-3 text-primary"></i>
+                        Use Fact-Checking Tools
+                    </h3>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-card border-l-4 border-success">
+                        <div class="flex items-start">
+                            <div class="bg-success/10 p-3 rounded-lg mr-4 hidden sm:block">
+                                <i class="fa-solid fa-info-circle text-success text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-lg font-medium text-success mb-3">Why it matters:</h4>
+                                <p class="text-gray-700 mb-4">Specialized tools and databases can quickly verify claims, images, and sources, saving time and increasing accuracy.</p>
+                                <h4 class="text-lg font-medium text-success mb-3">How to do it:</h4>
+                                <ul class="list-disc pl-5 text-gray-700 space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Use reverse image search for photos and videos</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Consult fact-checking organizations like Snopes, FactCheck.org, or PolitiFact</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Verify quotes with original sources</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Check for plagiarism or recycled content</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-item" data-step="5">
+                <div class="timeline-header">
+                    <div class="timeline-dot"></div>
+                    <h3 class="ml-8 text-xl font-semibold flex items-center">
+                        <i class="fa-solid fa-lightbulb mr-3 text-primary"></i>
+                        Enhance Critical Thinking
+                    </h3>
+                </div>
+                <div class="timeline-content">
+                    <div class="timeline-card border-l-4 border-warning">
+                        <div class="flex items-start">
+                            <div class="bg-warning/10 p-3 rounded-lg mr-4 hidden sm:block">
+                                <i class="fa-solid fa-info-circle text-warning text-xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-lg font-medium text-warning mb-3">Why it matters:</h4>
+                                <p class="text-gray-700 mb-4">Developing critical thinking skills helps you become a more discerning consumer of information in the long term.</p>
+                                <h4 class="text-lg font-medium text-warning mb-3">How to do it:</h4>
+                                <ul class="list-disc pl-5 text-gray-700 space-y-2">
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Question assumptions and challenge your own biases</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Ask "Why is this important?" and "What's missing?"</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Consider the motives behind the information</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check-circle text-success mt-1 mr-2"></i>
+                                        <span>Stay curious and keep learning about different subjects</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Call to Action -->
+        <div class="mt-20 bg-white rounded-2xl p-8 shadow-lg max-w-3xl mx-auto relative overflow-hidden">
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-primary/5 rounded-full blur-2xl"></div>
+            <div class="absolute -bottom-10 -left-10 w-40 h-40 bg-secondary/5 rounded-full blur-2xl"></div>
+            
+            <div class="relative z-10 text-center">
+                <h2 class="text-2xl font-bold text-dark mb-4">Start Fact-Checking Today!</h2>
+                <p class="text-gray-600 mb-6 max-w-xl mx-auto">Use these steps to become a more informed reader and share only trustworthy information with others.</p>
+                <button class="bg-primary hover:bg-primary/90 text-white font-medium py-3 px-8 rounded-full shadow-lg transition-all duration-300 transform hover:-translate-y-1 hover:shadow-xl">
+                    <i class="fa-solid fa-check-circle mr-2"></i> I'll Be More Careful!
+                </button>
+            </div>
+        </div>
+        
+        <footer class="mt-20 text-center text-gray-500 text-sm">
+            <p>© 2025 Fact-Checking Initiative. All rights reserved.</p>
+            <div class="mt-4 flex justify-center space-x-4">
+                <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">
+                    <i class="fa-brands fa-twitter"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-primary transition-colors duration-300">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            timelineItems.forEach(item => {
+                const header = item.querySelector('.timeline-header');
+                
+                header.addEventListener('click', function() {
+                    // Close all items
+                    timelineItems.forEach(i => {
+                        i.classList.remove('active');
+                    });
+                    
+                    // Open clicked item
+                    item.classList.add('active');
+                    
+                    // Smooth scroll to the active item
+                    item.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+            });
+        });
+    </script>
+</body>
+</html>    
