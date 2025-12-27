@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>施工进度管理系统演示</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .green { background-color: #90ee90; } /* 绿色表示低偏差 */
+        .yellow { background-color: #ffffe0; } /* 黄色表示较低偏差 */
+        .orange { background-color: #ffd580; } /* 橙色表示中等偏差 */
+        .red { background-color: #ffcccb; } /* 红色表示高偏差 */
+        #predictBtn { margin-top: 20px; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+        #predictBtn:hover { background-color: #45a049; }
+        #prediction { margin-top: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>施工进度可靠性控制系统</h1>
+    <p>此演示模拟了基于人工智能的施工管理研究文章的结果，使用BIM和深度学习。</p>
+    
+    <h2>进度监控与早期预警</h2>
+    <table id="progressTable">
+        <tr>
+            <th>日期</th>
+            <th>计划累计 (%)</th>
+            <th>实际累计 (%)</th>
+            <th>偏差 (%)</th>
+            <th>可靠性状态</th>
+            <th>早期预警信号</th>
+        </tr>
+        <tr>
+            <td>6月7-11日</td>
+            <td>不适用</td>
+            <td>不适用</td>
+            <td>-2% 到 2%</td>
+            <td>高</td>
+            <td>绿色</td>
+        </tr>
+        <tr>
+            <td>6月13日</td>
+            <td>81.099</td>
+            <td>77.099</td>
+            <td>-4</td>
+            <td>一般</td>
+            <td>橙色</td>
+        </tr>
+        <tr>
+            <td>6月15日</td>
+            <td>85.511</td>
+            <td>80.899</td>
+            <td>-4.612</td>
+            <td>低</td>
+            <td>红色</td>
+        </tr>
+        <tr>
+            <td>6月17日 (预测)</td>
+            <td>89.523 (假设)</td>
+            <td>84.311</td>
+            <td>-5.21</td>
+            <td>低</td>
+            <td>红色</td>
+        </tr>
+    </table>
+    
+    <h2>进度预测</h2>
+    <p>点击按钮基于当前速率预测项目完成日期。</p>
+    <button id="predictBtn">预测完成</button>
+    <div id="prediction"></div>
+    
+    <h2>模拟结果</h2>
+    <p>进行1000次模拟，项目完成概率为40%。</p>
+    
+    <script>
+        // 根据偏差对表格行进行颜色编码
+        const rows = document.querySelectorAll('#progressTable tr');
+        rows.forEach((row, index) => {
+            if (index === 0) return; // 跳过表头
+            const deviationCell = row.cells[3];
+            const deviation = parseFloat(deviationCell.textContent);
+            if (isNaN(deviation)) {
+                row.classList.add('green'); // 对于范围 -2% 到 2%
+            } else if (Math.abs(deviation) <= 2) {
+                row.classList.add('green');
+            } else if (Math.abs(deviation) <= 3) {
+                row.classList.add('yellow');
+            } else if (Math.abs(deviation) <= 4) {
+                row.classList.add('orange');
+            } else {
+                row.classList.add('red');
+            }
+        });
+
+        // 简单的线性预测完成日期
+        document.getElementById('predictBtn').addEventListener('click', () => {
+            // 来自6月15日的数据：实际80.899%，假设从6月13日到15日的每日速率：(80.899 - 77.099)/2 = 1.9% 每日
+            const currentActual = 80.899;
+            const dailyRate = 1.9; // 近似
+            const remaining = 100 - currentActual;
+            const daysNeeded = Math.ceil(remaining / dailyRate);
+            const currentDate = new Date(2025, 5, 15); // 2025年6月15日 (月份从0开始)
+            const completionDate = new Date(currentDate);
+            completionDate.setDate(completionDate.getDate() + daysNeeded);
+            const formattedDate = completionDate.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', year: 'numeric' });
+            document.getElementById('prediction').textContent = `预测完成日期：大约 ${formattedDate} `;
+        });
+    </script>
+</body>
+</html>
