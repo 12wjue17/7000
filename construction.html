@@ -101,7 +101,7 @@
             const dailyRate = 1.9; // 近似
             const remaining = 100 - currentActual;
             const daysNeeded = Math.ceil(remaining / dailyRate);
-            const currentDate = new Date(2025, 5, 15); // 2025年6月15日 (月份从0开始)
+            const currentDate = new Date(2021, 5, 15); // 2021年6月15日 (月份从0开始)
             const completionDate = new Date(currentDate);
             completionDate.setDate(completionDate.getDate() + daysNeeded);
             const formattedDate = completionDate.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric', year: 'numeric' });
